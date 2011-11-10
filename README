@@ -1,13 +1,16 @@
 # TwitterMemorizerLib
 
-FIXME: write description
+TwitterMemorizerLibはTwitterからタイムラインを取得し、その取得したタイムライン中に指定された正規表現にマッチする
+文字列が存在するツイートが存在した場合にそのツイートを保存していく機能を提供します。
+
+このライブラリはtwitter4jの機能を使用しています。
 
 ## Usage
 
-FIXME: write
+TODO: Usageを追加すること！
 
 ## License
 
-Copyright (C) 2011 FIXME
+Copyright (C) 2011 naokirin
 
 Distributed under the Eclipse Public License, the same as Clojure.
