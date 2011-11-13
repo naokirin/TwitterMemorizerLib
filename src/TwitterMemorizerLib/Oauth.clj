@@ -26,12 +26,16 @@
   [access-token
    file-name]
   (with-open [os (new ObjectOutputStream (new FileOutputStream (new File file-name)))]
-    (. os writeObject access-token)))
+      (. os writeObject access-token)))
 
-(defn loadAccessToken
+(defn #^twitter4j.auth.AccessToken loadAccessToken
   "Load AccessToken"
-  [twitter
-   file-name]
+  [file-name]
   (with-open [is (new ObjectInputStream (new FileInputStream (new File file-name)))]
-      (. twitter setOAuthAccessToken (. is readObject))))
+        (. is readObject)))
 
+(defn setOAuthAccessToken
+  "Set AccessToken to Twitter Instance"
+  [twitter
+   access-token]
+    (. twitter setOAuthAccessToken access-token))
