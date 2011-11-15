@@ -6,17 +6,12 @@
   [consumer-key
    consumer-secret]
   (let [stream (. (twitter4j.TwitterStreamFactory.) getInstance)]
-      (do
-        (. stream setOAuthConsumer consumer-key consumer-secret)
-        stream)))
-
-(defn setStreamAccessToken
-  [stream
-   access-token]
-    (. stream setOAuthAccessToken access-token))
+    (do
+      (. stream setOAuthConsumer consumer-key consumer-secret)
+      stream)))
 
 (defn addStreamListener
   "Add Listener to Stream Instance"
   [stream
    stream-adapter]
-    (. stream addListener stream-adapter))
+  (. stream addListener stream-adapter))
