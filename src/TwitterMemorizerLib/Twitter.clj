@@ -1,5 +1,6 @@
-(ns TwitterMemorizerLib.Oauth
+(ns TwitterMemorizerLib.Twitter
   (:import [twitter4j.TwitterFactory])
+  (:import [twitter4j.TwitterStreamFactory])
   (:import [java.io ObjectInputStream ObjectOutputStream FileInputStream FileOutputStream File]))
 
 (defn createTwitterInstance
@@ -10,6 +11,21 @@
     (do
       (. twitter setOAuthConsumer consumer-key consumer-secret)
       twitter)))
+
+(defn createTwitterStreamInstance
+  "Return twitter4j.TwitterStream Instance"
+  [consumer-key
+   consumer-secret]
+  (let [stream (. (twitter4j.TwitterStreamFactory.) getInstance)]
+    (do
+      (. stream setOAuthConsumer consumer-key consumer-secret)
+      stream)))
+
+(defn addStreamListener
+  "Add Listener to Stream Instance"
+  [stream
+   stream-adapter]
+  (. stream addListener stream-adapter))
 
 (defn authorizeOAuth
   "Return access token with oauth-authorization"
