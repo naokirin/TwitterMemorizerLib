@@ -28,7 +28,7 @@
   (with-open [os (new ObjectOutputStream (new FileOutputStream (new File file-name)))]
     (. os writeObject access-token)))
 
-(defn #^twitter4j.auth.AccessToken loadAccessToken
+(defn loadAccessToken
   "Load AccessToken"
   [file-name]
   (with-open [is (new ObjectInputStream (new FileInputStream (new File file-name)))]
