@@ -6,11 +6,19 @@
 
 (def *regex-seq* (ref []))
 
+(defn match-regex-seq?
+  "Return whether the text matches all regex in sequence"
+  [text
+   regex-seq]
+  (if (not-empty regex-seq)
+    (reduce (fn [arg1 arg2] (or arg1 arg2)) (map (fn [arg] (not (nil? (re-find arg text)))) regex-seq))
+    false))
+
 (defn processTweet
-  "Process Tweet"
+  "Process Tweets"
   [status]
   (let [user (.. status getUser getScreenName) text (. status getText)]
-    (if (reduce (fn [arg1 arg2] (or arg1 arg2)) (map (fn [arg] (not (nil? (re-find arg text)))) @*regex-seq*))
+    (if (match-regex-seq? text @*regex-seq*)
       (str user ":" text))))
 
 (defn execOnStatus
