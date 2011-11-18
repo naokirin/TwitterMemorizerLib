@@ -4,7 +4,7 @@
 
 (import (twitter4j UserStreamAdapter))
 
-(def *regex-seq* (ref []))
+(def *saving-egex-seq* (ref []))
 
 (defn match-regex-seq?
   "Return whether the text matches all regex in sequence"
@@ -18,21 +18,22 @@
   "Process Tweets"
   [status]
   (let [user (.. status getUser getScreenName) text (. status getText)]
-    (if (match-regex-seq? text @*regex-seq*)
+    (if (match-regex-seq? text @*saving-egex-seq*)
       (str user ":" text))))
 
 (defn execOnStatus
   "Execution onStatus"
-  [text]
+  [text
+   fun]
   (if text
-    (println text)))
+    (fun text)))
 
 (defn myAdapter
   "Return UserStreamAdapter Instance"
   []
   (proxy [UserStreamAdapter] []
     (onStatus [status]
-        (execOnStatus (processTweet status)))))
+        (execOnStatus (processTweet status) println))))
 
 (defn execTwitterMemorizer
   "Execute TwitterMemorizer"
@@ -50,5 +51,5 @@
     (do
       (setOAuthAccessToken stream access-token)
       (addStreamListener stream (myAdapter))
-      (dosync (ref-set *regex-seq* regex-seq))
+      (dosync (ref-set *saving-egex-seq* regex-seq))
       (. stream user))))
