@@ -11,7 +11,7 @@
   [text
    regex-seq]
   (if (not-empty regex-seq)
-    (reduce (fn [arg1 arg2] (or arg1 arg2)) (map (fn [arg] (not (nil? (re-find arg text)))) regex-seq))
+    (reduce #(or %1 %2) (map #(not (nil? (re-find % text))) regex-seq))
     false))
 
 (defn processTweet
