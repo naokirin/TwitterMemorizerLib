@@ -5,8 +5,8 @@
 (deftest Memorizer
   (testing "Memorizer."
     (testing "match-regex-seq?は"
-      (testing "渡されたシーケンスが空のとき、falseを返す"
-        (are [text] (false? (match-regex-seq? text []))
+      (testing "渡されたシーケンスが空のとき、trueを返す"
+        (are [text] (true? (match-regex-seq? text []))
           ""
           "@"
           "123"
