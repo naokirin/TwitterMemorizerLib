@@ -58,7 +58,15 @@
             "@"
             "い"
             "ア"
-            "亜"))))
+            "亜")))
+
+      (testing "渡されたシーケンスが正規表現以外を含むとき、CastによるRuntimeExceptionが発生する"
+        (are [text seq]
+          (thrown-with-msg? RuntimeException #"cannot be cast to java.util.regex.Pattern" (match-regex-seq? text seq))
+          "" [""]
+          "" ["a"]
+          "a" ["a"]
+          "a" [#"" "a"])))
 
     (testing "execOnStatusは"
       (testing "文字列とstr関数を渡すと渡された文字列を返す"
