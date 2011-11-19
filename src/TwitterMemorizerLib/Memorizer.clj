@@ -42,7 +42,8 @@
   [consumer-key
    consumer-secret
    token-filename
-   name-and-regex-seq]
+   name-and-regex-seq
+   shutdown-fun]
   (let [twitter (createTwitterInstance consumer-key consumer-secret),
         access-token
         (if (. (clojure.contrib.java-utils/file token-filename) exists)
@@ -54,4 +55,6 @@
       (setOAuthAccessToken stream access-token)
       (addStreamListener stream (myAdapter))
       (dosync (ref-set *saving-regex-seq* name-and-regex-seq))
-      (. stream user))))
+      (. stream user)
+      (shutdown-fun)
+      (. stream shutdown))))
