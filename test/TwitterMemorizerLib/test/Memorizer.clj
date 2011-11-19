@@ -66,14 +66,6 @@
           "" [""]
           "" ["a"]
           "a" ["a"]
-          "a" [#"" "a"])))
+          "a" [#"" "a"])))))
 
-    (testing "execOnStatusは"
-      (testing "文字列とstr関数を渡すと渡された文字列を返す"
-        (are [text] (= text (execOnStatus text str))
-          "az"
-          "09"
-          "@"
-          "あ"
-          "日本語"
-          "\n")))))
+

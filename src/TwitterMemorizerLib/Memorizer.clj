@@ -1,8 +1,7 @@
 (ns TwitterMemorizerLib.Memorizer
   (:use [TwitterMemorizerLib.Twitter])
-  (:use [clojure.contrib.java-utils]))
-
-(import (twitter4j UserStreamAdapter))
+  (:use [clojure.contrib.java-utils])
+  (:import [twitter4j UserStreamAdapter]))
 
 (def *saving-regex-seq* (ref []))
 
@@ -19,21 +18,14 @@
   [status]
   (let [user (.. status getUser getScreenName) text (. status getText)]
     (if (match-regex-seq? text @*saving-regex-seq*)
-      (str user ":" text))))
-
-(defn execOnStatus
-  "Execution onStatus"
-  [text
-   fun]
-  (if text
-    (fun text)))
+      (println user ":" text))))
 
 (defn myAdapter
   "Return UserStreamAdapter Instance"
   []
   (proxy [UserStreamAdapter] []
     (onStatus [status]
-        (execOnStatus (processTweet status) println))))
+        (processTweet status))))
 
 (defn execTwitterMemorizer
   "Execute TwitterMemorizer"
