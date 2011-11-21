@@ -10,7 +10,7 @@
 
 (def *saving-regex-seq* (ref []))
 
-(defn match-regex-seq?
+(defn- match-regex-seq?
   "Return whether the text matches all regex in sequence"
   [text
    regex-seq]
@@ -18,7 +18,7 @@
     (reduce #(or %1 %2) (map #(not (nil? (re-find % text))) regex-seq))
     true))
 
-(defn processTweet
+(defn- process-tweet
   "Process Tweets"
   [status name-and-regex-seq]
   (dorun (map
@@ -30,30 +30,30 @@
         (println regex-name " / " user ":" text)))
            name-and-regex-seq)))
 
-(defn myAdapter
+(defn- my-adapter
   "Return UserStreamAdapter Instance"
   []
   (proxy [UserStreamAdapter] []
     (onStatus [status]
-      (processTweet status @*saving-regex-seq*))))
+      (process-tweet status @*saving-regex-seq*))))
 
-(defn execTwitterMemorizer
+(defn exec-twitter-memorizer
   "Execute TwitterMemorizer"
   [consumer-key
    consumer-secret
    token-filename
    name-and-regex-seq
    shutdown-fun]
-  (let [twitter (createTwitterInstance consumer-key consumer-secret),
+  (let [twitter (create-twitter-instance consumer-key consumer-secret),
         access-token
         (if (. (clojure.contrib.java-utils/file token-filename) exists)
-          (loadAccessToken token-filename)
-          (let [tok (authorizeOAuth twitter println read-line)]
-            (do (saveAccessToken tok token-filename) tok))),
-        stream (createTwitterStreamInstance consumer-key  consumer-secret)]
+          (load-access-token token-filename)
+          (let [tok (authorize-oauth twitter println read-line)]
+            (do (save-access-token tok token-filename) tok))),
+        stream (create-twitter-stream-instance consumer-key  consumer-secret)]
     (do
-      (setOAuthAccessToken stream access-token)
-      (addStreamListener stream (myAdapter))
+      (set-oauth-access-token stream access-token)
+      (add-stream-listener stream (my-adapter))
       (dosync (ref-set *saving-regex-seq* name-and-regex-seq))
       (. stream user)
       (shutdown-fun)

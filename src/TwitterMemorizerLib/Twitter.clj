@@ -3,7 +3,7 @@
   (:import [twitter4j.TwitterStreamFactory])
   (:import [java.io ObjectInputStream ObjectOutputStream FileInputStream FileOutputStream File]))
 
-(defn createTwitterInstance
+(defn create-twitter-instance
   "Return twitter4j.Twitter Instance with setting consumer key and consumer secret"
   [consumer-key
    consumer-secret]
@@ -12,7 +12,7 @@
       (. twitter setOAuthConsumer consumer-key consumer-secret)
       twitter)))
 
-(defn createTwitterStreamInstance
+(defn create-twitter-stream-instance
   "Return twitter4j.TwitterStream Instance"
   [consumer-key
    consumer-secret]
@@ -21,13 +21,13 @@
       (. stream setOAuthConsumer consumer-key consumer-secret)
       stream)))
 
-(defn addStreamListener
+(defn add-stream-listener
   "Add Listener to Stream Instance"
   [stream
    stream-adapter]
   (. stream addListener stream-adapter))
 
-(defn authorizeOAuth
+(defn authorize-oauth
   "Return access token with oauth-authorization"
   [twitter
    output-url-fun
@@ -37,20 +37,20 @@
       (output-url-fun (. token getAuthorizationURL))
       (. twitter getOAuthAccessToken token (if (fn? input-pin) (input-pin) input-pin)))))
 
-(defn saveAccessToken
+(defn save-access-token
   "Save AccessToken"
   [access-token
    file-name]
   (with-open [os (new ObjectOutputStream (new FileOutputStream (new File file-name)))]
     (. os writeObject access-token)))
 
-(defn loadAccessToken
+(defn load-access-token
   "Load AccessToken"
   [file-name]
   (with-open [is (new ObjectInputStream (new FileInputStream (new File file-name)))]
     (. is readObject)))
 
-(defn setOAuthAccessToken
+(defn set-oauth-access-token
   "Set AccessToken to Twitter Instance"
   [twitter
    access-token]
