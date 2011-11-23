@@ -8,7 +8,7 @@
   :screenname-regex-seq
   :tweet-regex-seq)
 
-(def *saving-regex-seq* (ref []))
+(def ^{:private true} *saving-regex-seq* (ref []))
 
 (defn- match-regex-seq?
   "Return whether the text matches all regex in sequence"
@@ -44,7 +44,7 @@
   (if (. (clojure.contrib.java-utils/file token-filename) exists)
     (load-access-token token-filename)
     (let [tok (authorize-oauth twitter println read-line)]
-    (do (save-access-token tok token-filename) tok))))
+      (do (save-access-token tok token-filename) tok))))
 
 (defn exec-twitter-memorizer
   "Execute TwitterMemorizer"

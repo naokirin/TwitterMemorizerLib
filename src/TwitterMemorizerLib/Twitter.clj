@@ -7,19 +7,15 @@
   "Return twitter4j.Twitter Instance with setting consumer key and consumer secret"
   [consumer-key
    consumer-secret]
-  (let [twitter (. (twitter4j.TwitterFactory.) getInstance)]
-    (do
-      (. twitter setOAuthConsumer consumer-key consumer-secret)
-      twitter)))
+  (doto (. (twitter4j.TwitterFactory.) getInstance)
+    (.setOAuthConsumer consumer-key consumer-secret)))
 
 (defn create-twitter-stream-instance
   "Return twitter4j.TwitterStream Instance"
   [consumer-key
    consumer-secret]
-  (let [stream (. (twitter4j.TwitterStreamFactory.) getInstance)]
-    (do
-      (. stream setOAuthConsumer consumer-key consumer-secret)
-      stream)))
+  (doto (. (twitter4j.TwitterStreamFactory.) getInstance)
+    (.setOAuthConsumer consumer-key consumer-secret)))
 
 (defn add-stream-listener
   "Add Listener to Stream Instance"
