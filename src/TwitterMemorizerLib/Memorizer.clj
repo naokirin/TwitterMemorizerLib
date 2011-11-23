@@ -37,6 +37,15 @@
     (onStatus [status]
       (process-tweet status @*saving-regex-seq*))))
 
+(defn- set-access-token
+  "Return Access token"
+  [twitter
+   token-filename]
+  (if (. (clojure.contrib.java-utils/file token-filename) exists)
+    (load-access-token token-filename)
+    (let [tok (authorize-oauth twitter println read-line)]
+    (do (save-access-token tok token-filename) tok))))
+
 (defn exec-twitter-memorizer
   "Execute TwitterMemorizer"
   [consumer-key
@@ -45,11 +54,7 @@
    name-and-regex-seq
    shutdown-fun]
   (let [twitter (create-twitter-instance consumer-key consumer-secret),
-        access-token
-        (if (. (clojure.contrib.java-utils/file token-filename) exists)
-          (load-access-token token-filename)
-          (let [tok (authorize-oauth twitter println read-line)]
-            (do (save-access-token tok token-filename) tok))),
+        access-token (set-access-token twitter token-filename),
         stream (create-twitter-stream-instance consumer-key  consumer-secret)]
     (do
       (set-oauth-access-token stream access-token)
