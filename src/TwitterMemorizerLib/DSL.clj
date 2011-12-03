@@ -21,7 +21,7 @@
   ([coll] (expand-set #{} coll)))
 
 (defmacro- defmemo
-  [memo-name & args]
+  [& args]
   `(let [m# (hash-map ~@args)]
      (alter-var-root #'f
        (fn [_#]
