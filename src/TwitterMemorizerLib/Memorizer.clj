@@ -8,8 +8,6 @@
   :screenname-regex-seq
   :tweet-regex-seq)
 
-(def ^{:private true} *saving-regex-seq* (ref []))
-
 (defn- match-regex-seq?
   "Return whether the text matches all regex in sequence"
   [text
@@ -32,10 +30,10 @@
 
 (defn- my-adapter
   "Return UserStreamAdapter Instance"
-  []
+  [regex-seq]
   (proxy [UserStreamAdapter] []
     (onStatus [status]
-      (process-tweet status @*saving-regex-seq*))))
+      (process-tweet status regex-seq))))
 
 (defn- set-access-token
   "Return Access token"
@@ -58,8 +56,7 @@
         stream (create-twitter-stream-instance consumer-key  consumer-secret)]
     (do
       (set-oauth-access-token stream access-token)
-      (add-stream-listener stream (my-adapter))
-      (dosync (ref-set *saving-regex-seq* name-and-regex-seq))
+      (add-stream-listener stream (my-adapter name-and-regex-seq))
       (. stream user)
       (shutdown-fun)
       (. stream shutdown))))
