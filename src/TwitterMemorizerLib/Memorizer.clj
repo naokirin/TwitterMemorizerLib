@@ -62,8 +62,10 @@
    token-filename]
   (if (. (file token-filename) exists)
     (load-access-token token-filename)
-    (let [tok (authorize-oauth twitter println read-line)]
-      (do (save-access-token tok token-filename) tok))))
+    (do
+      (println "Go to this URL, authorize and input pin-code")
+      (let [tok (authorize-oauth twitter println read-line)]
+        (save-access-token tok token-filename) tok))))
 
 (defn exec-twitter-memorizer
   "Execute TwitterMemorizer"
