@@ -1,7 +1,6 @@
 (defmemo
   :regex-set [
-               ["all", [], []]
                ["reply", [], [#"^@"]]
-               ["self", [#"naoki_rin"], []]
+               ["self", [#"Naoki_Rin"], []]
                ["RT or MT", [], [#"^RT" #"^MT"]]
                ])

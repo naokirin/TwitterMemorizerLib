@@ -8,3 +8,4 @@ pom.xml
 accesstoken
 Main.clj
 *.swp
+jsonfile
