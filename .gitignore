@@ -6,6 +6,5 @@ pom.xml
 .idea/
 *.iml
 accesstoken
-Main.clj
 *.swp
 jsonfile
